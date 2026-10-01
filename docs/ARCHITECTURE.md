@@ -48,7 +48,7 @@
 > second-life EV batteries, solar — and compared several aggregator 'brains': simple rules, an optimizer using learned
 > models, and an LLM agent. And I **measured the energy consumed by the AI itself**. The result: the lightweight
 > optimizer earns €75 more per week and cuts the rebound by a factor of 6.5, with no loss of comfort, for less than one
-> milliwatt-hour of compute. The LLM uses 1,500 times more energy for a slightly worse result. The lesson: the right AI
+> milliwatt-hour of compute. The LLM uses about 330 times more energy for a slightly worse result. The lesson: the right AI
 > for flexibility is forecasting and optimization; the LLM belongs at the strategic level only."
 
 ### The 2-minute pitch (structure)
@@ -402,7 +402,7 @@ an architect is expected to know **why**, not just **what**.
   (protected groups, order, preheating, charging). Execution every 15 min stays with the optimizer.
 - **Alternatives**: an LLM at every step (672 calls/week, slow, expensive, unstable); no LLM at all (we couldn't answer
   the question "what about generative AI?").
-- **Consequences**: 18 calls for one week instead of hundreds; results close to the optimizer; energy cost measured and
+- **Consequences**: 8 calls for one week instead of hundreds; results close to the optimizer; energy cost measured and
   comparable.
 
 ### ADR-08 · A custom agentic harness (rather than an agent framework)
@@ -985,7 +985,7 @@ The **levers**, and why each one exists:
 
 - **Latency**: ~10 s per call on CPU; 672 decisions per week × 60 homes = impossible.
 - **Reliability**: a 1.5 B model forgets fields, invents names, writes its tool calls as text.
-- **Energy**: 1,242 mWh for 18 calls, versus 0.83 mWh for **the whole** week's optimization.
+- **Energy**: 238 mWh for 8 calls, versus 0.72 mWh for **the whole** week's optimization (1,242 mWh for 18 calls with the French prompt).
 - **What the LLM brings**: a natural-language interface, the ability to take qualitative instructions into account
   ("protect vulnerable people"), and an explainable trace. Useful **at the strategic level**, not in the control loop.
 
@@ -1042,9 +1042,9 @@ methods 2 and 3, each validating the other (~0.07 Wh per Qwen 1.5 B call on this
 |---|---|
 | learning the 60 thermal models | ~0.0002 Wh |
 | rules (round-robin) | ~0.03 mWh |
-| AI optimizer (learning + forecasts + 64 optimizations) | **0.83 mWh** |
-| LLM agent (18 calls, 3 min) | **1,242 mWh** (≈ 1.2 Wh) |
-| for comparison: energy shed by the optimizer | ~780 kWh (i.e. ~900,000 kWh per Wh of AI) |
+| AI optimizer (learning + forecasts + 64 optimizations) | **0.72 mWh** |
+| LLM agent (8 calls, 40 s) | **238 mWh** (≈ 0.24 Wh) |
+| for comparison: energy shed by the optimizer | ~780 kWh (i.e. ~1,000,000 kWh per Wh of AI) |
 
 ---
 
@@ -1079,18 +1079,18 @@ weather and grid data (Open-Meteo, RTE), simulated homes and appliances. **8 req
 
 | | Cut everything | Round-robin | Prepared round-robin (best without AI) | **AI optimizer** | LLM agent |
 |---|---|---|---|---|---|
-| Delivered | 58 % | 64 % | 91 % | **89 %** | 88 % |
-| Hold rate | 50 % | 17 % | 72 % | 64 % | 64 % |
-| Rebound | 633 kWh | 488 kWh | 460 kWh | **70 kWh** | 62 kWh |
-| Added discomfort | +239 °C·h | +102 °C·h | +70 °C·h | **−33 °C·h** | −34 °C·h |
-| Min T of occupants at home | 15.9 °C | 16.1 °C | 16.3 °C | **16.8 °C** | 16.8 °C |
-| RTE revenue | −9.67 € | 15.49 € | 134.68 € | 126.14 € | 121.55 € |
-| Bill savings | 47.70 € | 19.64 € | 150.43 € | **231.41 €** | 228.07 € |
-| Battery wear | 0 € | 0 € | 5.84 € | 3.51 € | 3.52 € |
-| **Profit** | 38 € | 35 € | 279 € | **354 €** | 346 € |
-| AI energy | ~0 | ~0 | ~0 | **0.83 mWh** | 1,242 mWh |
-| LLM calls | 0 | 0 | 0 | 0 | 18 |
-| **Net AI gain** | | | reference | **+74.76 €** | +66.83 € |
+| Delivered | 58 % | 64 % | 91 % | **89 %** | 87 % |
+| Hold rate | 50 % | 17 % | 72 % | 64 % | 62 % |
+| Rebound | 633 kWh | 488 kWh | 460 kWh | **70 kWh** | 61 kWh |
+| Added discomfort | +239 °C·h | +102 °C·h | +70 °C·h | **−33 °C·h** | −37 °C·h |
+| Min T of occupants at home | 15.9 °C | 16.1 °C | 16.3 °C | **16.8 °C** | 17.1 °C |
+| RTE revenue | −9.67 € | 15.49 € | 134.68 € | 126.14 € | 119.83 € |
+| Bill savings | 47.70 € | 19.64 € | 150.43 € | **231.41 €** | 227.26 € |
+| Battery wear | 0 € | 0 € | 5.84 € | 3.51 € | 3.51 € |
+| **Profit** | 38 € | 35 € | 279 € | **354 €** | 344 € |
+| AI energy | ~0 | ~0 | ~0 | **0.72 mWh** | 238 mWh |
+| LLM calls | 0 | 0 | 0 | 0 | 8 |
+| **Net AI gain** | | | reference | **+74.76 €** | +64.30 € |
 
 **How to read it**
 
@@ -1099,10 +1099,14 @@ weather and grid data (Open-Meteo, RTE), simulated homes and appliances. **8 req
 2. **A well-designed rule is already good** (91 %): honesty requires saying so. The AI does not win on volume.
 3. **The AI wins on everything else**: rebound ÷ 6.5, comfort better than without demand response (preheating), bill
    (cars charged during off-peak hours), wear. **+75 € net per week** for 60 homes.
-4. **Frugal AI crushes the challenge's question**: 0.83 mWh of compute for ~780 kWh shed.
-5. **The LLM**: same execution mechanics, slightly worse choices (−8 €), **1,500 times more energy**. Its cost in euros
-   stays negligible **because it is only called 18 times**: it is the architecture (ADR-07) that makes it acceptable,
-   not the model.
+4. **Frugal AI crushes the challenge's question**: 0.72 mWh of compute for ~780 kWh shed.
+5. **The LLM**: same execution mechanics, slightly worse choices (−10 €), **~330 times more energy**. Its cost in
+   euros stays negligible **because it is only called 8 times**: it is the architecture (ADR-07) that makes it
+   acceptable, not the model.
+6. **Prompt language matters**: in the French version of this project, the same agent on the same week needed
+   **18 calls (1,242 mWh)** instead of 8 (238 mWh): more malformed answers, hence more self-correction rounds and
+   invented group names. Same model, same task, ~5× the energy. One run each: an observation, not a benchmark — but a
+   good argument for measuring rather than assuming.
 
 **Honesty**: the **CO2 avoided is small** (0.7 kg). Two reasons: demand response **shifts** consumption more than it
 removes it, and we use the **average** intensity of the French grid (low-carbon). The real climate gain comes from
@@ -1330,8 +1334,8 @@ a safe fallback, traces, measurement. Two real bugs from a small model were fixe
 
 **Q. So the LLM is useless?**
 It is useful at the strategic level (one decision the day before, qualitative instructions, a readable explanation),
-not in the control loop. Measured: 1,500 times more energy than the optimizer for a slightly worse result; acceptable
-only because it is called 18 times a week. That is an architecture decision, not a model decision.
+not in the control loop. Measured: about 330 times more energy than the optimizer for a slightly worse result; acceptable
+only because it is called 8 times a week. That is an architecture decision, not a model decision.
 
 **Q. How did you measure the LLM's energy?**
 CPU time × TDP per core, with three methods (our own process, the whole machine minus background noise, durations

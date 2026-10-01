@@ -98,16 +98,21 @@ Week of 15–21 January 2024, 60 homes, 8 RTE requests. Real weather and grid da
 
 | | Cut everything | Round-robin | Prepared round-robin (best without AI) | AI optimizer | LLM agent |
 |---|---|---|---|---|---|
-| Delivered | 58 % | 64 % | 91 % | 89 % | 88 % |
-| Rebound | 633 kWh | 488 kWh | 460 kWh | 70 kWh | 62 kWh |
-| Added discomfort | +239 °C·h | +102 °C·h | +70 °C·h | −33 °C·h | −34 °C·h |
-| Profit | 38 € | 35 € | 279 € | 354 € | 346 € |
-| AI compute energy | ~0 | ~0 | ~0 | 0.83 mWh | 1,242 mWh |
-| Net AI gain vs best rule | | | reference | +74.76 € | +66.83 € |
+| Delivered | 58 % | 64 % | 91 % | 89 % | 87 % |
+| Rebound | 633 kWh | 488 kWh | 460 kWh | 70 kWh | 61 kWh |
+| Added discomfort | +239 °C·h | +102 °C·h | +70 °C·h | −33 °C·h | −37 °C·h |
+| Profit | 38 € | 35 € | 279 € | 354 € | 344 € |
+| AI compute energy | ~0 | ~0 | ~0 | 0.72 mWh | 238 mWh |
+| LLM calls | 0 | 0 | 0 | 0 | 8 |
+| Net AI gain vs best rule | | | reference | +74.76 € | +64.30 € |
 
 - **The sober optimizer wins**: +75 €/week, rebound divided by 6.5, no added discomfort, for less than 1 mWh of compute.
-- **The LLM agent** uses ~1,500× more energy for a slightly worse result. It is acceptable only because it is called
-  18 times a week (strategic level, the day before), never every 15 minutes.
+- **The LLM agent** (Qwen 2.5 1.5B on a laptop CPU) uses ~330× more energy than the optimizer for a slightly worse
+  result (−10 €). It is acceptable only because it is called 8 times a week (strategic level, the day before), never
+  every 15 minutes.
+- **Prompt language matters**: in the French version of this project, the same agent needed 18 calls (1,242 mWh) for
+  the same week — retries after malformed answers. Same model, same task, ~5× the energy (a single run each: an
+  observation, not a benchmark).
 - **Honest caveat**: the homes are simulated, and the CO2 gain is underestimated (average grid intensity, not
   marginal intensity).
 
