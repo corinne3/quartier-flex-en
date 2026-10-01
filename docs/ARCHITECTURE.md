@@ -3,7 +3,7 @@
 > **Demand response in a residential district: connected appliances, second-life EV batteries, solar.
 > Does the AI in control save more energy than it consumes?**
 >
-> Aclimakathon 2026 — challenge #5 · Repository: https://github.com/corinne3/quartier-flex-en · MIT License
+> Aclimakathon 2026 — challenge #4 · Repository: https://github.com/corinne3/quartier-flex-en · MIT License
 
 > 🇫🇷 French version: https://github.com/corinne3/quartier-flex
 
@@ -104,7 +104,7 @@ flowchart LR
 - Real-world example: Voltalis switches off electric heaters **for a few minutes, in rotation**, in hundreds of
   thousands of homes. Each cut goes unnoticed; together they add up to hundreds of MW.
 
-### 1.3 The challenge #5 question
+### 1.3 The challenge #4 question
 
 > "Make sure that power-system optimization solutions don't consume more than they help save."
 

@@ -10,7 +10,7 @@ Does the AI that steers it save more than it consumes?**
 
 🇫🇷 Version française : https://github.com/corinne3/quartier-flex
 
-Team project from the **Aclimakathon 2026** (challenge #5), following on from [Bilan Net](https://github.com/corinne3/bilan-net)
+Team project from the **Aclimakathon 2026** (challenge #4, 🏆 **Participants' Choice Award**), following on from [Bilan Net](https://github.com/corinne3/bilan-net)
 (in French) and [Autoconso IA](https://github.com/corinne3/autoconso-ia) (in French).
 
 ## The idea
