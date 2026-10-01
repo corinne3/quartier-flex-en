@@ -1,0 +1,38 @@
+# Project identity card. Install: pip install -e ".[all]"
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quartier-flex-en"
+version = "0.1.0"
+description = "Demand response in a district (connected appliances, second-life EV batteries, solar): does the AI that steers it save more than it consumes?"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Corinne Berges" }]
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "scikit-learn>=1.4",   # forecasts (gradient boosting), habits (k-means), SOH (robust regression)
+    "scipy>=1.11",         # optimizer (linear programming, HiGHS solver)
+    "pydantic>=2.5",       # contracts and agentic harness
+    "httpx>=0.27",         # Open-Meteo, RTE, Ollama
+    "psutil>=5.9",         # compute-cost measurement
+    "matplotlib>=3.8",     # charts
+]
+
+[project.optional-dependencies]
+app = ["streamlit>=1.38"]
+dev = ["pytest>=8"]
+video = ["edge-tts>=6.1", "pyttsx3>=2.90", "imageio-ffmpeg>=0.5"]
+all = ["streamlit>=1.38", "pytest>=8", "edge-tts>=6.1", "pyttsx3>=2.90", "imageio-ffmpeg>=0.5"]
+
+[project.scripts]
+quartier = "quartierflex.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
